@@ -8,7 +8,7 @@ N = 200;
 d = round(n/log(n));
 % d = round(n/log(n)/3);
 
-B = 500; % Bootstrap次数
+B = 500; %
 
 rho = [0.25 0.5];
 rho = rho(2);
@@ -111,8 +111,7 @@ for iter = 1:N
 
 %% Adaptive bootstrap testing
     for b = 1:B
-        % 有放回地随机抽取n个样本
-        indices = randi(n, 1, n); % 生成随机索引（允许重复）
+        indices = randi(n, 1, n);
         X_b = X(indices,:);
         Z_b = Z(indices,:);
         T_b = T(indices);
@@ -319,17 +318,14 @@ while k3<=1000 && err2==0
     while k2<=1000 && err1==0
         %k2
 
-        %% 数值稳定化计算指数
         exp_arg = 2 * a * beta.^2;
-        max_exp = 700;  % 防止溢出
+        max_exp = 700; 
         exp_arg = min(exp_arg, max_exp);
         exp_term = exp(exp_arg);
 
-        % 计算分子和分母
         numerator = 4*a*lambda0*exp_term + 1e-6;
         denominator = (exp_term + 1).^2 + 1e-6;
 
-        % 处理极端情况（可选）
         mask_large = exp_arg > 700;
         numerator(mask_large) = 0;
         denominator(mask_large) = 1;
@@ -338,7 +334,6 @@ while k3<=1000 && err2==0
         numerator(mask_small) = 1e-6;
         denominator(mask_small) = 1 + 1e-6;
 
-        % 计算 W1
         W1 = diag(numerator./ denominator);
 
         % beta = beta.*(abs(beta)>1e-3);
@@ -435,8 +430,8 @@ for j = 1:p
         Cel2(1,i) = {v(i,:)'*v(i,:)};
     end
 
-    f1 = cumsum(cat(3,Cel1{:}),3);   % % 二阶偏导的第一项
-    f2 = cumsum(cat(3,Cel2{:}),3);   % % 二阶偏导的第二项
+    f1 = cumsum(cat(3,Cel1{:}),3);   
+    f2 = cumsum(cat(3,Cel2{:}),3);  
 
     for i=1:n
         Cel3(1,i) = {f1(:,:,i)};
@@ -453,7 +448,6 @@ end
 
 
 end
-
 
 
 
@@ -600,8 +594,8 @@ end
         Cel2(1,i) = {v(i,:)'*v(i,:)};
     end
 
-    f1 = cumsum(cat(3,Cel1{:}),3);   % % 二阶偏导的第一项
-    f2 = cumsum(cat(3,Cel2{:}),3);   % % 二阶偏导的第二项
+    f1 = cumsum(cat(3,Cel1{:}),3);   
+    f2 = cumsum(cat(3,Cel2{:}),3);   
 
     for i=1:n
         Cel3(1,i) = {f1(:,:,i)};
@@ -774,8 +768,8 @@ for i=1:n
     Cel2(1,i) = {v(i,:)'*v(i,:)};
 end
 
-f1 = cumsum(cat(3,Cel1{:}),3);   % % 二阶偏导的第一项
-f2 = cumsum(cat(3,Cel2{:}),3);   % % 二阶偏导的第二项
+f1 = cumsum(cat(3,Cel1{:}),3);   
+f2 = cumsum(cat(3,Cel2{:}),3);   
 
 for i=1:n
     Cel3(1,i) = {f1(:,:,i)};
