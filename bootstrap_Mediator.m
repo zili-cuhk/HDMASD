@@ -139,8 +139,8 @@ end
         Cel2(1,i) = {v(i,:)'*v(i,:)};
     end
 
-    f1 = cumsum(cat(3,Cel1{:}),3);   % % 二阶偏导的第一项
-    f2 = cumsum(cat(3,Cel2{:}),3);   % % 二阶偏导的第二项
+    f1 = cumsum(cat(3,Cel1{:}),3);   
+    f2 = cumsum(cat(3,Cel2{:}),3);   
 
     for i=1:n
         Cel3(1,i) = {f1(:,:,i)};
