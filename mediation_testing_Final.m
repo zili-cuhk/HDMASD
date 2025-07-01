@@ -8,7 +8,7 @@ N = 200;
 d = round(n/log(n));
 % d = round(n/log(n)/3);
 
-B = 500; % Bootstrap次数
+B = 500; 
 
 rho = [0.25 0.5];
 rho = rho(2);
