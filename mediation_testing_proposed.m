@@ -296,7 +296,7 @@ while k3<=1000 && err2==0
         %k2
 
         exp_arg = 2 * a * beta.^2;
-        max_exp = 700;  % 防止溢出
+        max_exp = 700;  
         exp_arg = min(exp_arg, max_exp);
         exp_term = exp(exp_arg);
 
