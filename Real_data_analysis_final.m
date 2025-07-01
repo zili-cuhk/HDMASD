@@ -1,15 +1,15 @@
 tic
 format short
 clc;clear;close;
-% data = load('D:/科研项目/课题8/Real data analysis/HumanMethylation450.xlsx'); % 从文本文件中加载大型数据集
+% data = load('D:Real data analysis/HumanMethylation450.xlsx');
 
-data = readtable('D:/科研项目/课题8/Real data analysis/Lung_HumanMethylation450.csv');
-clinical_data = readtable('D:/科研项目/课题8/Real data analysis/Lung_clinical_754.csv');
-% SampleID = readtable('D:/科研项目/课题8/Real data analysis/sample_id(1)');
-% disp(size(data)); % 显示数据的行列数
+data = readtable('D:/Real data analysis/Lung_HumanMethylation450.csv');
+clinical_data = readtable('D:/Real data analysis/Lung_clinical_754.csv');
+% SampleID = readtable('D:Real data analysis/sample_id(1)');
+% disp(size(data)); 
 M = data{2:365307,3:756};
 M = M';
-% disp(size(M)); % 显示数据的行列数
+% disp(size(M)); 
 
 TT = table2array(clinical_data(:,2));
 Delta = table2array(clinical_data(:,3));
@@ -36,7 +36,6 @@ a = 70;
 
 lambda_n = 4*sqrt(n)/log(n);
 B = 500;
-
 
 N = 1;
 beta_alpha_boot = zeros(d,N);
@@ -76,8 +75,7 @@ T_alpha = sqrt(n)*opt_alpha(index_Selection)./sqrt(variance_alpha(index_Selectio
 for b = 1:B
     b
     rng(b)
-    % 有放回地随机抽取n个样本
-    indices = randi(n, 1, n); % 生成随机索引（允许重复）
+    indices = randi(n, 1, n);
     X_b = X(indices,:);
     Z_b = Z(indices,:);
     T_b = T(indices);
@@ -153,8 +151,8 @@ for i=1:n
     Cel2(1,i) = {v(i,:)'*v(i,:)};
 end
 
-f1 = cumsum(cat(3,Cel1{:}),3);   % % 二阶偏导的第一项
-f2 = cumsum(cat(3,Cel2{:}),3);   % % 二阶偏导的第二项
+f1 = cumsum(cat(3,Cel1{:}),3);   %
+f2 = cumsum(cat(3,Cel2{:}),3);   %
 
 for i=1:n
     Cel3(1,i) = {f1(:,:,i)};
