@@ -230,7 +230,7 @@ hmas <- function(X, Y, M, COV, k,
 
 ##########################Real-data-analysis###############
 
-setwd("D:/科研项目/课题8/Realdata_comparison")
+setwd("D:/Realdata_comparison")
 
 load("Methylation754_col.RData")
 dat <- read.csv("Lung_clinical_754_1.csv", header = TRUE, stringsAsFactors = FALSE)
@@ -246,8 +246,8 @@ Mediator <- as.data.frame(t(Mediator_vec))
 LUNG_clinicalMatrix <- read.delim("LUNG_clinicalMatrix", sep = "\t", header = TRUE)
 sample_id <- read.delim("sample_id", sep = "\t", header = TRUE)
 
-dim(dat)  # 查看行数和列数
-head(dat) # 查看前几行
+dim(dat)  
+head(dat) 
 
 dat$T <- dat$OS
 dat$status <- dat$Death
@@ -255,7 +255,6 @@ dat$sex <- dat$gender
 dat$age <- dat$age_at_initial_pathologic_diagnosis
 dat$age_minmax <- (dat$age - min(dat$age)) / (max(dat$age) - min(dat$age))
 dat$exposure <- dat$X.smoking..current.smoker_1.0.
-
 
 
 SurvivalData1 <- list()
