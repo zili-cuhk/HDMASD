@@ -576,10 +576,8 @@ library(HIMA)
 # }
 
 
-# 设置工作目录
-setwd("D:/科研项目/课题8/Realdata_comparison")
+setwd("D:/Realdata_comparison")
 
-# 直接加载文件（文件路径需正确）
 load("Methylation754_col.RData")
 dat <- read.csv("Lung_clinical_754_1.csv", header = TRUE, stringsAsFactors = FALSE)
 
@@ -594,14 +592,11 @@ Mediator <- as.data.frame(t(Mediator_vec))
 LUNG_clinicalMatrix <- read.delim("LUNG_clinicalMatrix", sep = "\t", header = TRUE)
 sample_id <- read.delim("sample_id", sep = "\t", header = TRUE)
 
-#ls()  # 查看当前环境中的变量名
-# 检查数据类型
+#ls() 
 #class(a)
 
-
-# 检查数据/确认数据内容
-dim(dat)  # 查看行数和列数
-head(dat) # 查看前几行
+dim(dat)  
+head(dat) 
 
 dat$T <- dat$OS
 dat$status <- dat$Death
@@ -615,7 +610,6 @@ dat$age_minmax <- (dat$age - min(dat$age)) / (max(dat$age) - min(dat$age))
 #dat$T_minmax <- (dat$T - min(dat$T)) / (max(dat$T) - min(dat$T))
 
 dat$exposure <- dat$X.smoking..current.smoker_1.0.
-
 
 
 SurvivalData1 <- list()
@@ -637,7 +631,6 @@ SurvivalData1$Mediator <- scale(Mediator)
 
 head(SurvivalData1$PhenoData)
 
-
 hima_survival.fit <- hima_survival(
   X = SurvivalData1$PhenoData$Treatment,
   M = SurvivalData1$Mediator,
@@ -651,7 +644,6 @@ hima_survival.fit <- hima_survival(
 )
 
 hima_survival.fit
-
 
 # Treatment <- SurvivalData1$PhenoData$Treatment
 # Time <- SurvivalData1$PhenoData$Time
