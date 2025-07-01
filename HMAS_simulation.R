@@ -242,37 +242,23 @@ library(R.matlab)
 library(future.apply)
 library(rhdf5)
 
-setwd("D:/科研项目/课题8/simulation_coding_2025_04_16")
+setwd("D:/simulation_coding")
 
 N <- 200
+h5_file <- H5Fopen("simulated_data.mat")
 
-# 读取MAT文件
-h5_file <- H5Fopen("simulated_data3.mat")
-
-
-
-# 读取文件结构
-file_path <- "simulated_data3.mat"
+file_path <- "simulated_data.mat"
 all_nodes <- h5ls(file_path)
 
-# 筛选主组（匹配数字、单个字母或双字母）
 main_groups <- all_nodes[grepl("^/#refs#/(\\d+|[A-Za-z]{1,2})", all_nodes$group), ]
-# 提取主组ID（捕获数字、单个字母或双字母，忽略后续字符）
 main_group_ids <- unique(gsub("^/#refs#/(\\d+|[A-Za-z]{1,2}).*", "\\1", main_groups$group))
-
-# 筛选主组（匹配数字、数字+字母、纯字母）
 main_groups <- all_nodes[grepl("^/#refs#/(\\d+[A-Za-z]|\\d+|[A-Za-z]{1,2})", all_nodes$group), ]
-
-# 提取主组ID（优先捕获数字+字母，再数字或字母）
 main_group_ids <- unique(
   gsub("^/#refs#/((\\d+[A-Za-z])|(\\d+)|([A-Za-z]{1,2})).*", "\\1", main_groups$group)
 )
 
-
-# 定义需要读取的数据集
 datasets <- c("T", "X", "Z","M", "Delta", "ID_M")
 
-# 批量读取主组数据
 all_data <- lapply(main_group_ids, function(id) {
   group_path <- paste0("/#refs#/", id)
   data <- lapply(datasets, function(ds) {
@@ -284,7 +270,6 @@ all_data <- lapply(main_group_ids, function(id) {
 })
 names(all_data) <- paste0("Group_", main_group_ids)
 
-# 关闭连接
 H5close()
 
 
@@ -330,15 +315,11 @@ hima_survival.fit <- hmas(
   verbose = TRUE, 
 ) 
 
-# 检查 S 中每个元素是否在 index 中，记录为 1/0
 result_matrix[i, ] <- as.integer(Index_M %in% hima_survival.fit[[2]])
 index_f[[i]] <- hima_survival.fit[[2]]
 
 }
 
-
-
-# 移除 NULL
 cleaned_list <- Filter(Negate(is.null), index_f)
 FDR <- matrix(nrow = length(cleaned_list),ncol = 1)
 power_individual <- matrix(nrow = length(cleaned_list),ncol = 6)
@@ -346,40 +327,27 @@ power_overall <- matrix(nrow = length(cleaned_list),ncol = 1)
 
 for (i in 1:length(cleaned_list)) {
   
+
+  TP <- sum(cleaned_list[[i]] %in% Index_M) 
+  FP <- sum(!cleaned_list[[i]] %in% Index_M) 
   
-  
-  # 计算 TP 和 FP
-  TP <- sum(cleaned_list[[i]] %in% Index_M)  # 选中且真实相关的元素
-  FP <- sum(!cleaned_list[[i]] %in% Index_M)  # 选中但不在 S 中的元素（假设 S 外均为无关）
-  
-  # 计算 FDR
   FDR[i,] <- FP / (TP + FP)
   
-  
-  
-  # # 计算单个变量的功效（被选中的概率）
   # power_individual[i,] <- sapply(Index_M, function(var) {
   #   sum(sapply(cleaned_list[[i]], function(x) var %in% x)) / length(Index_M)
   # })
   # 
-  # 计算整体功效（平均被选中的真实变量比例）
   power_overall[i,] <- mean(sapply(hima_survival.fit[[2]], function(x) {
     sum(x %in% Index_M) / N
   }))
   
-  # 计算单个变量的被选概率（正确分母）
   power_individual[i,] <- sapply(Index_M, function(var) {
     sum(sapply(cleaned_list[[i]], function(x) var %in% x)) / N  # 分母为模拟次数
   })
   
-  
-  
 }
 
-
 fdr_M <- sum(FDR)/N
-
 power_indi <- apply(power_individual, 2,sum)
-
 power_all <- sum(power_overall)
 
