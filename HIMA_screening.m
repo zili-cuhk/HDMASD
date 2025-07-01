@@ -47,15 +47,15 @@ AB = Beta.*Alph;  % true value of beta*alpha
 
 %%
 
-n_samples = n;  % 每个数据集样本量
-datasets = cell(N, 1); % 创建元胞数组
+n_samples = n;  %
+datasets = cell(N, 1); % 
 
 
 %% Simulation Study
 for iter = 1:N
     iter
     
-    rng(iter)   %% 设置随机种子，进一步控制重复性
+    rng(iter)   %% 
     [T,X,Z,M,Delta] = simulation_data(n,Beta,Alph,theta,xi,gamma,mu,sigma,tau1,iter);
     Censorrate(iter) = 1-mean(Delta);
     ini_value(:,iter) = initial_beta(n,[X Z M],1e-5,Delta);  % initial value
@@ -78,9 +78,7 @@ for iter = 1:N
 end
 
 
-% 保存为MAT文件（v7.3格式支持R读取）
-save('simulated_data7.mat', 'datasets', '-V6');
-% save('simulated_data4.mat', 'datasets', '-v7.3');
+save('simulated_data.mat', 'datasets', '-V6');
 
 
 %% Assessment criteria 
