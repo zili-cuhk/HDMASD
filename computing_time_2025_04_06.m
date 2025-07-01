@@ -36,12 +36,6 @@ a = 90;
 % Beta = [0.55;0.6;0.65;0.7;0.5;0.5;zeros(p-6,1)];
 % Alph = [0.5;0.45;0.5;0.4;0.45;0.45;zeros(p-6,1)];
 
-% Beta = [0.55;0.60;0.65;0.70;0.50;0;0;-3.05*rho;zeros(p-8,1)];
-% Alph = [0.5;0.45;0.5;0.4;0.45;0;0.45;0.45;zeros(p-8,1)];  %signal is too large
-
-% Beta = [0.75;0.75;0.75;0.70;0.75;0;0;-3.5*rho;zeros(p-8,1)];
-% Alph = [0.35;0.35;0.30;0.25;0.30;0;0.30;0.30;zeros(p-8,1)];
-
 
 Beta = [0.7;0.7;0.7;0.70;0.7;0;0;-3.5*rho;zeros(p-8,1)];
 Alph = [0.35;0.35;0.30;0.25;0.30;0;0.30;0.30;zeros(p-8,1)];
@@ -60,7 +54,7 @@ AB = Beta.*Alph;  % true value of beta*alpha
 for iter = 1:N
     iter
     
-    rng(iter)   %% 设置随机种子，进一步控制重复性
+    rng(iter)   
     [T,X,Z,M,Delta] = simulation_data(n,Beta,Alph,theta,xi,gamma,mu,sigma,tau1,iter);
     Censorrate(iter) = 1-mean(Delta);
     % ini_value(:,iter) = initial_beta(n,[X Z M],1e-5,Delta);  % initial value
